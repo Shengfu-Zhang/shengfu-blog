@@ -6,68 +6,41 @@
   <title>Loading… — Shengfu Zhang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/base16/tomorrow.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
   <style>
     :root {
-      --bg:   #f6f3ec;
-      --surf: #ede9e0;
-      --c:    #1c6454;
-      --cm:   rgba(28,100,84,.15);
-      --cl:   rgba(28,100,84,.06);
-      --muted: rgba(28,100,84,.4);
+      --bg:     #f4f2ee;
+      --card:   #ffffff;
+      --c:      #1a1814;
+      --acc:    #1c6454;
+      --acc-bg: rgba(28,100,84,.1);
+      --muted:  #888078;
+      --border: rgba(0,0,0,.07);
+      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.05);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(circle, rgba(28,100,84,.12) 1px, transparent 1px);
+      background-size: 22px 22px;
       color: var(--c);
       font-family: 'DM Sans', system-ui, sans-serif;
       font-weight: 400;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
-      display: grid;
-      grid-template-columns: 36px 1fr 36px;
     }
 
-    /* ── Sidebars ── */
-    .sidebar {
-      border-right: 1px solid var(--cm);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 0;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-    }
-    .sidebar-r { border-right: none; border-left: 1px solid var(--cm); }
-
-    .sidebar-text {
-      font-family: 'DM Mono', monospace;
-      font-size: .5rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-      color: var(--c);
-      opacity: .3;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-
-    /* ── Main ── */
-    main {
-      padding: 2rem 3rem 6rem;
+    .page {
       max-width: 720px;
-      width: 100%;
       margin: 0 auto;
+      padding: 3rem 2rem 6rem;
     }
 
     /* ── Back nav ── */
@@ -75,80 +48,109 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: 1.8rem;
-      border-bottom: 1px solid var(--cm);
+      margin-bottom: 2rem;
     }
 
     .back-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .78rem;
-      color: var(--c);
-      border: 1px solid var(--c);
-      border-radius: 100px;
-      padding: .22rem .85rem;
-      text-decoration: none;
-      opacity: .6;
       display: inline-flex;
       align-items: center;
       gap: .4rem;
-      transition: opacity .15s, background .15s;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .15s;
     }
-    .back-link:hover { opacity: 1; background: var(--cl); }
+    .back-link:hover { color: var(--acc); }
 
-    /* ── Post header ── */
-    .post-header {
-      padding: 2.5rem 0 2rem;
-      border-bottom: 1px solid var(--cm);
-    }
-
-    .post-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(1.8rem, 5vw, 3rem);
-      line-height: 1.05;
-      letter-spacing: -.02em;
-      text-transform: uppercase;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--c);
-    }
-
-    .post-meta {
+    .back-site {
       font-family: 'DM Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--c);
-      opacity: .45;
-      margin-top: 1rem;
+      font-size: .6rem;
+      color: var(--muted);
+      opacity: .4;
+      letter-spacing: .04em;
+    }
+
+    /* ── Post header card ── */
+    .post-header {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 2.2rem 2.4rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1.2rem;
+    }
+
+    /* Read time — prominent at very top of card */
+    .read-time-bar {
       display: flex;
       align-items: center;
-      gap: .7rem;
+      gap: .6rem;
+      margin-bottom: 1.2rem;
       flex-wrap: wrap;
     }
 
-    .post-tags { display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .8rem; }
+    .read-time {
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .06em;
+      color: var(--card);
+      background: var(--acc);
+      border-radius: 100px;
+      padding: .22rem .75rem;
+    }
+
+    .post-date-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: .65rem;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    .post-tags { display: flex; gap: .4rem; flex-wrap: wrap; }
 
     .tag {
       font-family: 'DM Mono', monospace;
-      font-size: .58rem;
+      font-size: .62rem;
       letter-spacing: .04em;
-      color: var(--c);
-      border: 1px solid var(--c);
+      color: var(--acc);
+      background: var(--acc-bg);
       border-radius: 100px;
-      padding: .1rem .55rem;
-      opacity: .45;
+      padding: .18rem .65rem;
     }
 
-    /* ── Article body ── */
-    .article {
-      padding-top: 2.5rem;
+    .post-title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 4vw, 2.1rem);
+      color: var(--c);
+      line-height: 1.2;
+      letter-spacing: -.015em;
+      margin-bottom: 1rem;
     }
 
+    .post-byline {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-top: .8rem;
+    }
+    .post-byline strong { color: var(--c); font-weight: 500; }
+
+    /* ── Article card ── */
+    .article-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 2.2rem 2.4rem;
+      box-shadow: var(--shadow);
+    }
+
+    /* Typography */
     .article p {
       font-size: 1rem;
       line-height: 1.82;
-      color: var(--c);
-      opacity: .85;
+      color: #2e2a24;
       margin-bottom: 1.4em;
     }
 
@@ -156,62 +158,59 @@
       font-family: 'Syne', sans-serif;
       font-weight: 700;
       color: var(--c);
+      line-height: 1.2;
+      letter-spacing: -.015em;
+    }
+
+    .article h2 {
+      font-size: 1.25rem;
       margin: 2.2em 0 .7em;
-      line-height: 1.15;
-      letter-spacing: -.01em;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
     }
 
-    .article h2 { font-size: 1.25rem; }
-    .article h3 { font-size: 1rem; opacity: .75; }
+    .article h3 { font-size: 1.05rem; margin: 1.8em 0 .5em; }
 
-    .article h2::before {
-      content: '= ';
-      font-family: 'DM Mono', monospace;
-      font-size: .85em;
-      opacity: .4;
-    }
-
-    .article strong { font-weight: 500; opacity: 1; color: var(--c); }
+    .article strong { font-weight: 600; color: var(--c); }
     .article em { font-style: italic; }
 
-    .article a {
-      color: var(--c);
-      text-underline-offset: 2px;
-    }
+    .article a { color: var(--acc); text-underline-offset: 2px; }
 
     .article hr {
       border: none;
-      border-top: 1px solid var(--cm);
+      border-top: 1px solid var(--border);
       margin: 2.2em 0;
     }
 
     .article blockquote {
-      border-left: 2px solid var(--c);
-      padding: .7rem 1.2rem;
+      border-left: 3px solid var(--acc);
+      padding: .8rem 1.2rem;
       margin: 1.8em 0;
-      opacity: .65;
+      background: var(--acc-bg);
+      border-radius: 0 6px 6px 0;
     }
-    .article blockquote p { margin: 0; }
+    .article blockquote p { margin: 0; color: var(--c); }
 
     .article ul, .article ol {
-      padding-left: 1.4em;
+      padding-left: 1.5em;
       margin-bottom: 1.4em;
     }
-    .article li { margin-bottom: .35em; line-height: 1.75; font-size: 1rem; opacity: .85; }
+    .article li { margin-bottom: .4em; font-size: 1rem; line-height: 1.75; color: #2e2a24; }
 
     .article :not(pre) > code {
       font-family: 'DM Mono', monospace;
       font-size: .85em;
-      background: var(--surf);
-      border: 1px solid var(--cm);
+      background: #f0ede6;
+      border: 1px solid var(--border);
       padding: .1em .4em;
-      border-radius: 3px;
+      border-radius: 4px;
+      color: var(--acc);
     }
 
     .article pre {
-      background: var(--surf) !important;
-      border: 1px solid var(--cm);
-      border-radius: 6px;
+      background: #f0ede6 !important;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       padding: 1.2rem 1.4rem;
       overflow-x: auto;
       margin: 1.6em 0;
@@ -223,118 +222,156 @@
       border: none !important;
       padding: 0 !important;
       font-family: 'DM Mono', monospace !important;
+      color: var(--c);
     }
 
     .article .mermaid {
-      background: var(--surf);
-      border: 1px solid var(--cm);
-      border-radius: 6px;
+      background: #f0ede6;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       padding: 1.5rem;
       margin: 1.8em 0;
       text-align: center;
     }
 
-    /* ── Footer ── */
+    .article table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.8em 0;
+      font-size: .95rem;
+    }
+    .article th, .article td {
+      border: 1px solid var(--border);
+      padding: .55rem .85rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    .article th {
+      background: rgba(28,100,84,.06);
+      font-family: 'DM Mono', monospace;
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--acc);
+      letter-spacing: .02em;
+    }
+    .article tr:nth-child(even) td { background: rgba(0,0,0,.02); }
+
+    /* ── Post footer ── */
     .post-footer {
-      margin-top: 3.5rem;
-      padding-top: 1.4rem;
-      border-top: 1px solid var(--cm);
+      margin-top: 1.2rem;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.4rem 2rem;
+      box-shadow: var(--shadow);
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
     }
 
     .footer-copy {
       font-family: 'DM Mono', monospace;
-      font-size: .6rem;
-      color: var(--c);
-      opacity: .3;
+      font-size: .62rem;
+      color: var(--muted);
+      opacity: .5;
     }
 
     #loading {
-      padding: 3rem 0;
+      background: var(--card);
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      box-shadow: var(--shadow);
       font-family: 'DM Mono', monospace;
       font-size: .72rem;
       letter-spacing: .1em;
-      color: var(--c);
-      opacity: .35;
+      color: var(--muted);
     }
 
-    /* ── Responsive ── */
     @media (max-width: 600px) {
-      body { grid-template-columns: 0 1fr 0; }
-      .sidebar { display: none; }
-      main { padding: 1.5rem 1.4rem 4rem; }
-      .post-title { font-size: 1.8rem; }
+      .page { padding: 1.5rem 1rem 4rem; }
+      .post-header, .article-card { padding: 1.6rem 1.4rem; }
+      .post-title { font-size: 1.6rem; }
+      .back-site { display: none; }
     }
   </style>
 </head>
 <body>
+<div class="page">
 
-<aside class="sidebar">
-  <div class="sidebar-text">shengfu zhang · writing</div>
-</aside>
-
-<main>
   <nav class="back-nav">
-    <a class="back-link" href="index.html">← Writing</a>
-    <span style="font-family:'DM Mono',monospace;font-size:.6rem;opacity:.3;letter-spacing:.05em">shengfu-zhang.github.io/shengfu-blog</span>
+    <a class="back-link" href="index.html">← All posts</a>
+    <span class="back-site">shengfu-zhang.github.io</span>
   </nav>
 
+  <div id="loading">Loading…</div>
+
   <div id="post-header" class="post-header" style="display:none">
-    <div class="post-title" id="post-title"></div>
-    <div class="post-meta" id="post-meta"></div>
+    <!-- Read time — always at the very top -->
+    <div class="read-time-bar">
+      <span class="read-time" id="read-time">· min read</span>
+      <span class="post-date-meta" id="post-date"></span>
+    </div>
+    <h1 class="post-title" id="post-title"></h1>
     <div class="post-tags" id="post-tags"></div>
+    <div class="post-byline">By <strong>Shengfu Zhang</strong></div>
   </div>
 
-  <div id="loading">Loading…</div>
-  <article class="article" id="article" style="display:none"></article>
+  <div class="article-card" id="article-wrap" style="display:none">
+    <article class="article" id="article"></article>
+  </div>
 
   <footer class="post-footer" id="post-footer" style="display:none">
     <a class="back-link" href="index.html">← All posts</a>
     <span class="footer-copy">Shengfu Zhang · 2026</span>
   </footer>
-</main>
 
-<aside class="sidebar sidebar-r">
-  <div class="sidebar-text">stay curious · build things</div>
-</aside>
+</div>
 
 <script>
-  // Post metadata — keyed by slug
-  const POSTS = {
-    '2026-03-ai-velocity': {
-      title: 'We Sped Up the Wrong Part',
-      date: 'March 2026',
-      tags: ['AI', 'Engineering', 'Productivity'],
-    },
-  };
-
   mermaid.initialize({
     startOnLoad: false,
     theme: 'base',
     themeVariables: {
-      background: '#ede9e0',
-      primaryColor: '#e0dbd0',
-      primaryTextColor: '#1c6454',
+      background: '#f0ede6',
+      primaryColor: '#e8e4da',
+      primaryTextColor: '#1a1814',
       lineColor: 'rgba(28,100,84,.4)',
-      edgeLabelBackground: '#ede9e0',
+      edgeLabelBackground: '#f0ede6',
     }
   });
 
-  const renderer = new marked.Renderer();
-  renderer.code = function(token) {
-    const lang = (token.lang || '').trim();
-    if (lang === 'mermaid') return `<div class="mermaid">${token.text}</div>`;
-    const hl = lang && hljs.getLanguage(lang)
-      ? hljs.highlight(token.text, { language: lang }).value
-      : hljs.highlightAuto(token.text).value;
-    return `<pre><code class="hljs">${hl}</code></pre>`;
-  };
-  marked.use({ renderer, breaks: true, gfm: true });
+  const slug = new URLSearchParams(location.search).get('slug');
+
+  marked.use({
+    breaks: true,
+    gfm: true,
+    renderer: {
+      code(code, lang) {
+        const l = (lang || '').trim();
+        if (l === 'mermaid') return `<div class="mermaid">${code}</div>`;
+        if (typeof hljs === 'undefined') return `<pre><code>${code}</code></pre>`;
+        const hl = l && hljs.getLanguage(l)
+          ? hljs.highlight(code, { language: l }).value
+          : hljs.highlightAuto(code).value;
+        return `<pre><code class="hljs">${hl}</code></pre>`;
+      },
+      image(href, title, text) {
+        if (!href) return '';
+        const src = (href.startsWith('http') || href.startsWith('/'))
+          ? href
+          : `posts/${slug}/${href}`;
+        return `<img src="${src}" alt="${text || ''}" style="max-width:100%;border-radius:8px;margin:1.5rem 0;">`;
+      },
+    }
+  });
+
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
 
   function readTime(text) {
-    return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200)) + ' min read';
+    const words = text.trim().split(/\s+/).length;
+    const mins  = Math.max(1, Math.round(words / 200));
+    return `${mins} min read · ${words.toLocaleString()} words`;
   }
 
   function stripH1(md) {
@@ -342,21 +379,21 @@
   }
 
   async function load() {
-    const slug = new URLSearchParams(location.search).get('slug');
     if (!slug) { document.getElementById('loading').textContent = 'No post specified.'; return; }
 
-    const meta = POSTS[slug];
-    if (!meta) { document.getElementById('loading').textContent = 'Post not found.'; return; }
-
     try {
-      const res = await fetch(`posts/${slug}/blog.md`);
-      if (!res.ok) throw new Error(res.status);
-      const md = await res.text();
+      const [metaRes, mdRes] = await Promise.all([
+        fetch(`posts/${slug}/blog.json`),
+        fetch(`posts/${slug}/blog.md`),
+      ]);
+      if (!metaRes.ok || !mdRes.ok) throw new Error('not found');
+      const meta = await metaRes.json();
+      const md   = await mdRes.text();
 
-      // Fill header
       document.title = meta.title + ' — Shengfu Zhang';
+      document.getElementById('read-time').textContent = readTime(md);
+      document.getElementById('post-date').textContent = fmtDate(meta.date);
       document.getElementById('post-title').textContent = meta.title;
-      document.getElementById('post-meta').textContent = meta.date + ' · ' + readTime(md);
 
       const tagsEl = document.getElementById('post-tags');
       meta.tags.forEach(t => {
@@ -365,15 +402,17 @@
         tagsEl.appendChild(s);
       });
 
-      document.getElementById('post-header').style.display = '';
       document.getElementById('article').innerHTML = marked.parse(stripH1(md));
-      document.getElementById('article').style.display = '';
-      document.getElementById('post-footer').style.display = '';
-      document.getElementById('loading').style.display = 'none';
+
+      document.getElementById('loading').style.display   = 'none';
+      document.getElementById('post-header').style.display = '';
+      document.getElementById('article-wrap').style.display = '';
+      document.getElementById('post-footer').style.display  = '';
 
       await mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+
     } catch(e) {
-      document.getElementById('loading').textContent = 'Failed to load post.';
+      document.getElementById('loading').textContent = 'Post not found.';
       console.error(e);
     }
   }

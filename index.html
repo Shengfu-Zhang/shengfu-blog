@@ -6,344 +6,365 @@
   <title>Shengfu Zhang</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:   #f6f3ec;
-      --surf: #ede9e0;
-      --c:    #1c6454;
-      --cm:   rgba(28,100,84,.15);
-      --cl:   rgba(28,100,84,.06);
-      --muted: rgba(28,100,84,.4);
+      --bg:     #f4f2ee;
+      --card:   #ffffff;
+      --c:      #1a1814;
+      --acc:    #1c6454;
+      --acc-bg: rgba(28,100,84,.1);
+      --muted:  #888078;
+      --border: rgba(0,0,0,.07);
+      --shadow: 0 1px 3px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.05);
+      --shadow-hover: 0 6px 20px rgba(0,0,0,.1), 0 0 0 1px rgba(0,0,0,.05);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; }
 
     body {
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image: radial-gradient(circle, rgba(28,100,84,.12) 1px, transparent 1px);
+      background-size: 22px 22px;
       color: var(--c);
       font-family: 'DM Sans', system-ui, sans-serif;
       font-weight: 400;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
-      display: grid;
-      grid-template-columns: 36px 1fr 36px;
-      grid-template-rows: 1fr;
     }
 
-    /* ── Sidebars ── */
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 256px 1fr;
+      gap: 2rem;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      align-items: start;
+    }
+
+    /* ── Sidebar ── */
     .sidebar {
-      border-right: 1px solid var(--cm);
+      position: sticky;
+      top: 2.5rem;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 2rem 0;
-      gap: 1.5rem;
-      position: sticky;
-      top: 0;
-      height: 100vh;
+      gap: 1.2rem;
     }
 
-    .sidebar-r {
-      border-right: none;
-      border-left: 1px solid var(--cm);
+    .sidebar-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.6rem;
+      box-shadow: var(--shadow);
     }
 
-    .mascot {
-      font-size: 1rem;
-      line-height: 1;
-      opacity: .5;
-      cursor: default;
-      user-select: none;
-    }
-
-    .sidebar-text {
-      font-family: 'DM Mono', monospace;
-      font-size: .5rem;
-      letter-spacing: .18em;
-      text-transform: uppercase;
+    .profile-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
       color: var(--c);
-      opacity: .3;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      flex: 1;
+      letter-spacing: -.01em;
+      line-height: 1.2;
+    }
+
+    .profile-role {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--acc);
+      margin-top: .35rem;
+    }
+
+    .profile-bio {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-top: .9rem;
+      font-weight: 400;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1rem 0;
+    }
+
+    .sidebar-nav {
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      gap: .1rem;
     }
 
-    /* ── Main ── */
-    main {
-      padding: 2rem 3rem 5rem;
-      max-width: 780px;
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    /* ── Top nav ── */
-    .topnav {
+    .sidebar-nav a {
       display: flex;
       align-items: center;
       gap: .5rem;
-      padding-bottom: 1.8rem;
-      border-bottom: 1px solid var(--cm);
-      flex-wrap: wrap;
-    }
-
-    .nav-link {
-      font-family: 'DM Sans', sans-serif;
-      font-size: .78rem;
-      color: var(--c);
-      border: 1px solid var(--c);
-      border-radius: 100px;
-      padding: .22rem .85rem;
+      font-size: .84rem;
+      color: var(--muted);
       text-decoration: none;
+      padding: .3rem 0;
+      transition: color .15s;
+    }
+    .sidebar-nav a:hover { color: var(--acc); }
+    .sidebar-nav a::before { content: '·'; color: var(--border); font-size: 1.1rem; line-height: 1; }
+
+    .sidebar-section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: .58rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
       opacity: .6;
-      transition: opacity .15s, background .15s;
+      margin-bottom: .7rem;
     }
-    .nav-link:hover { opacity: 1; background: var(--cl); }
 
-    .status {
-      font-family: 'DM Mono', monospace;
-      font-size: .62rem;
-      color: var(--c);
-      border: 1px solid var(--cm);
-      border-radius: 100px;
-      padding: .2rem .9rem;
+    .topic-list {
       display: flex;
-      align-items: center;
-      gap: .45rem;
-      margin-left: auto;
-      opacity: .55;
+      flex-direction: column;
+      gap: .5rem;
     }
 
-    .status-dot {
-      width: 5px; height: 5px;
+    .topic-item {
+      display: flex;
+      align-items: flex-start;
+      gap: .55rem;
+    }
+
+    .topic-dot {
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
-      background: var(--c);
+      border: 1.5px solid var(--acc);
       flex-shrink: 0;
+      margin-top: .28rem;
     }
 
-    /* ── Hero ── */
-    .hero {
-      padding: 2.5rem 0 2rem;
-      border-bottom: 1px solid var(--cm);
-      overflow: hidden;
-    }
-
-    .hero-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(2.8rem, 8vw, 5.5rem);
-      line-height: .95;
-      letter-spacing: -.02em;
-      text-transform: uppercase;
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--c);
-      white-space: nowrap;
-    }
-
-    .hero-bio {
-      font-family: 'DM Mono', monospace;
-      font-size: .68rem;
-      letter-spacing: .1em;
-      text-transform: uppercase;
+    .topic-name {
+      font-size: .82rem;
+      font-weight: 500;
       color: var(--c);
-      opacity: .45;
-      margin-top: 1rem;
-      line-height: 1.6;
+      line-height: 1.2;
     }
 
-    /* ── Section label ── */
-    .section-label {
-      font-family: 'DM Mono', monospace;
-      font-size: .65rem;
-      letter-spacing: .1em;
-      color: var(--c);
-      opacity: .45;
-      padding: 1.6rem 0 .9rem;
-    }
-
-    /* ── Post rows ── */
-    .post-row {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: .9rem .9rem;
-      border: 1px solid var(--cm);
-      border-radius: 6px;
-      margin-bottom: .4rem;
-      text-decoration: none;
-      color: var(--c);
-      transition: background .15s;
-    }
-    .post-row:hover { background: var(--cl); }
-
-    .post-year {
-      font-family: 'DM Mono', monospace;
-      font-size: .62rem;
-      opacity: .4;
-      min-width: 30px;
-      flex-shrink: 0;
-    }
-
-    .post-title {
-      font-size: .92rem;
-      font-weight: 400;
-      flex: 1;
+    .topic-sub {
+      font-size: .74rem;
+      color: var(--muted);
       line-height: 1.3;
     }
 
-    .post-tags { display: flex; gap: .35rem; flex-wrap: wrap; flex-shrink: 0; }
+    /* ── Main ── */
+    .main { min-width: 0; }
 
-    .tag {
+    .feed-heading {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.2rem;
+      color: var(--c);
+      letter-spacing: -.025em;
+      margin-bottom: 1.4rem;
+    }
+
+    .feed-heading .cursor {
+      color: var(--acc);
+      animation: blink .9s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── Post cards ── */
+    .post-card {
+      background: var(--card);
+      border-radius: 10px;
+      padding: 1.7rem 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 1rem;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .post-card:hover {
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-1px);
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-bottom: .9rem;
+      flex-wrap: wrap;
+    }
+
+    .card-date {
       font-family: 'DM Mono', monospace;
-      font-size: .58rem;
+      font-size: .65rem;
+      color: var(--muted);
       letter-spacing: .04em;
-      color: var(--c);
-      border: 1px solid var(--c);
+    }
+
+    .card-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      letter-spacing: .04em;
+      color: var(--acc);
+      background: var(--acc-bg);
       border-radius: 100px;
-      padding: .1rem .55rem;
-      opacity: .45;
+      padding: .18rem .65rem;
     }
 
-    .post-arrow {
-      font-size: .8rem;
-      opacity: 0;
-      transition: opacity .15s, transform .15s;
-      flex-shrink: 0;
-    }
-    .post-row:hover .post-arrow { opacity: .5; transform: translateX(2px); }
-
-    /* ── About ── */
-    .about {
-      margin-top: 2.5rem;
-      padding-top: 1.8rem;
-      border-top: 1px solid var(--cm);
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--c);
+      line-height: 1.3;
+      letter-spacing: -.01em;
+      margin-bottom: .6rem;
     }
 
-    .about p {
+    .card-summary {
       font-size: .88rem;
-      line-height: 1.8;
-      color: var(--c);
-      opacity: .7;
-      margin-bottom: .8rem;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-weight: 400;
     }
 
-    .about a {
-      color: var(--c);
-      opacity: 1;
-      text-underline-offset: 2px;
+    .card-link {
+      font-size: .84rem;
+      font-weight: 500;
+      color: var(--acc);
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      transition: gap .15s;
     }
+    .post-card:hover .card-link { gap: .5rem; }
 
     /* ── Footer ── */
-    footer {
-      margin-top: 3rem;
-      padding-top: 1.2rem;
-      border-top: 1px solid var(--cm);
+    .footer {
+      margin-top: 2rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .62rem;
+      color: var(--muted);
+      opacity: .5;
+      letter-spacing: .04em;
       display: flex;
       justify-content: space-between;
-      align-items: center;
     }
-
-    .footer-copy {
-      font-family: 'DM Mono', monospace;
-      font-size: .6rem;
-      letter-spacing: .05em;
-      color: var(--c);
-      opacity: .3;
-    }
-
-    .footer-dots { display: flex; gap: .4rem; align-items: center; }
-    .fdot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--c);
-      opacity: .25;
-    }
-    .fdot:first-child { opacity: .5; }
 
     /* ── Responsive ── */
-    @media (max-width: 600px) {
-      body { grid-template-columns: 0 1fr 0; }
-      .sidebar { display: none; }
-      main { padding: 1.5rem 1.4rem 4rem; }
-      .hero-name { font-size: 3rem; }
-      .post-tags { display: none; }
+    @media (max-width: 680px) {
+      .layout { grid-template-columns: 1fr; padding: 1.5rem 1rem 4rem; }
+      .sidebar { position: static; }
+      .feed-heading { font-size: 1.8rem; }
     }
   </style>
 </head>
 <body>
+<div class="layout">
 
-<!-- Left sidebar -->
-<aside class="sidebar">
-  <div class="mascot">◉</div>
-  <div class="sidebar-text">stay curious · build things</div>
-</aside>
+  <!-- Sidebar -->
+  <aside class="sidebar">
 
-<!-- Main -->
-<main>
+    <div class="sidebar-card">
+      <div class="profile-name">Shengfu Zhang</div>
+      <div class="profile-role">Engineer</div>
+      <div class="profile-bio">
+        Exploring how AI is reshaping the way we build software —
+        the tools, the systems, and the mental models engineers need to update.
+      </div>
 
-  <nav class="topnav">
-    <a class="nav-link" href="#">Writing</a>
-    <a class="nav-link" href="#">About</a>
-    <a class="nav-link" href="https://github.com/Shengfu-Zhang" target="_blank">GitHub</a>
-    <div class="status">
-      <span class="status-dot"></span>
-      Sharing what I'm learning
+      <div class="sidebar-divider"></div>
+
+      <nav class="sidebar-nav">
+        <a href="#">Writing</a>
+        <a href="#">About</a>
+        <a href="https://github.com/Shengfu-Zhang" target="_blank">GitHub</a>
+        <a href="#" target="_blank">LinkedIn</a>
+        <a href="#" target="_blank">小红书</a>
+      </nav>
     </div>
-  </nav>
 
-  <section class="hero">
-    <div class="hero-name">Shengfu Zhang</div>
-    <div class="hero-bio">
-      Engineer exploring how AI is reshaping the way we build software
+    <div class="sidebar-card">
+      <div class="sidebar-section-label">Writing About</div>
+      <div class="topic-list">
+        <div class="topic-item">
+          <div class="topic-dot"></div>
+          <div>
+            <div class="topic-name">AI Agents</div>
+            <div class="topic-sub">Orchestration, steering, multi-agent systems</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-dot"></div>
+          <div>
+            <div class="topic-name">Engineering Quality</div>
+            <div class="topic-sub">Code review, testing, delivery systems</div>
+          </div>
+        </div>
+        <div class="topic-item">
+          <div class="topic-dot"></div>
+          <div>
+            <div class="topic-name">Developer Productivity</div>
+            <div class="topic-sub">Tools, workflows, mental models</div>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <p class="section-label">= Writing</p>
+  </aside>
 
-  <a class="post-row" href="post.html?slug=2026-03-ai-velocity">
-    <span class="post-year">2026</span>
-    <span class="post-title">We Sped Up the Wrong Part</span>
-    <div class="post-tags">
-      <span class="tag">AI</span>
-      <span class="tag">Engineering</span>
-      <span class="tag">Productivity</span>
+  <!-- Main -->
+  <main class="main">
+
+    <h1 class="feed-heading">Log<span class="cursor">_</span></h1>
+
+    <div id="post-feed"></div>
+
+    <div class="footer">
+      <span>Shengfu Zhang · 2026</span>
+      <span>Built with HTML · GitHub Pages</span>
     </div>
-    <span class="post-arrow">→</span>
-  </a>
 
-  <!-- Add new posts above this line -->
+  </main>
 
-  <div class="about">
-    <p class="section-label" style="padding-top:0">= About</p>
-    <p>
-      I'm Shengfu — an engineer thinking about how AI is changing the craft of building software.
-      Not just the tools, but the systems, the workflows, and the mental models we need to update.
-    </p>
-    <p>
-      I write about what I'm learning in the field: agent orchestration, engineering quality at AI speed,
-      and what it means to design systems that are both fast and trustworthy.
-    </p>
-  </div>
+</div>
 
-  <footer>
-    <span class="footer-copy">Shengfu Zhang · 2026</span>
-    <div class="footer-dots">
-      <div class="fdot"></div>
-      <div class="fdot"></div>
-      <div class="fdot"></div>
-    </div>
-    <span class="footer-copy">Built with HTML · GitHub Pages</span>
-  </footer>
+<script>
+  function fmtDate(iso) {
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  }
 
-</main>
+  async function loadFeed() {
+    const feed = document.getElementById('post-feed');
+    try {
+      const slugs = await fetch('posts/index.json').then(r => r.json());
+      const posts = (await Promise.all(
+        slugs.map(slug => fetch(`posts/${slug}/blog.json`).then(r => r.json()).then(p => ({ ...p, slug })))
+      )).sort((a, b) => new Date(b.date) - new Date(a.date));
+      feed.innerHTML = posts.map(p => `
+        <a class="post-card" href="post.html?slug=${p.slug}">
+          <div class="card-meta">
+            <span class="card-date">${fmtDate(p.date)}</span>
+            ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+          </div>
+          <div class="card-title">${p.title}</div>
+          <div class="card-summary">${p.summary}</div>
+          <span class="card-link">Read post →</span>
+        </a>
+      `).join('');
+    } catch(e) {
+      feed.textContent = 'Failed to load posts.';
+      console.error(e);
+    }
+  }
 
-<!-- Right sidebar -->
-<aside class="sidebar sidebar-r">
-  <div class="sidebar-text">shengfu-zhang.github.io</div>
-</aside>
-
+  loadFeed();
+</script>
 </body>
 </html>
