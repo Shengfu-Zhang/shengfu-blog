@@ -1,143 +1,140 @@
 # CLAUDE.md
-> Standing instructions for AI agents (Claude Code, etc.) working on this repo.
-> Read this first before doing anything.
+> Agent instructions for Shengfu Zhang's personal blog.
+> Read this before doing anything. Use the slash commands below for each phase.
 
 ---
 
-## What This Repo Is
+## Quick Reference
 
-Personal blog and content artifact store for **Shengfu Zhang**.
-Live site: `https://shengfu-zhang.github.io/shengfu-blog/`
-Hosted via: GitHub Pages (static HTML, no build step)
+| Phase | Command | When |
+|-------|---------|------|
+| 1. Draft | `/draft` | Idea / notes / transcript → scaffold internal doc |
+| 2. Review | `/review` | Need structured feedback on an internal draft or generated artifact |
+| 3. Generate | `/generate` | Doc approved → create all publish-ready assets |
+| 4. Publish | `/publish` | Reviewed → upload via browser/MCP |
+
+**Git rule:** Always `git commit` locally. Never `git push` unless Shengfu explicitly says "push".
 
 ---
 
-## Repo Structure
+## Repo
+
+- **Live site:** `https://shengfu-zhang.github.io`
+- **Repo:** `https://github.com/Shengfu-Zhang/shengfu-zhang.github.io`
+- **Local dev:** `python3 -m http.server 8000` (fetch() requires HTTP, not file://)
+
+---
+
+## Structure
 
 ```
-shengfu-blog/
-├── CLAUDE.md                          ← You are here
-├── README.md                          ← Human-facing repo description
-├── index.html                         ← Personal site homepage
-├── post.html                          ← Shared post template (reads ?slug= param)
-├── theme-preview.html                 ← Dev only, not linked publicly
-├── internal/                          ← Private drafts, not linked publicly
-│   └── YYYY-MM-slug.md
+shengfu-zhang.github.io/
+├── CLAUDE.md
+├── README.md
+├── index.html                         ← Homepage (two-column card layout)
+├── post.html                          ← Shared post renderer (?slug= param)
+├── agent-sops/                        ← Agent SOPs (draft.sop.md, review.sop.md, generate.sop.md, publish.sop.md)
+├── .claude/commands/                  ← Thin wrappers that load agent-sops/ (one line each)
+├── internal/                          ← GITIGNORED. Raw source docs, local only.
+│   └── YYYY-MM-DD-slug/               ← Full date for precision (e.g. 2026-04-15-agent-design)
+│       ├── draft.md                      Main internal doc: ASCII art, 🖼️ placeholders, image queue
+│       ├── notes.md                      Raw research, links, supplementary data, follow-up angles
+│       ├── *.md                          Any additional supplement files
+│       └── images/                       ALL generated images live here first, split by destination
+│           ├── blog/                       Diagrams/charts for blog.md — copy only what blog.md references
+│           └── xhs/                        XHS card screenshots — copy all to posts/images/
 └── posts/
-    └── YYYY-MM-slug/
-        ├── blog.md                    ← Long-form post (Substack version) ← source of truth
-        ├── linkedin.md                ← LinkedIn post
-        ├── twitter.md                 ← X/Twitter thread
-        ├── xiaohongshu.md             ← 小红书 post (Chinese)
+    ├── index.json                     ← Ordered slug list (newest first); index.html fetches each blog.json
+    └── YYYY-MM-DD-slug/               ← Single post  (or YYYY-MM-DD-slug-part-1, -part-2 for series)
+        ├── blog.json                  ← Post metadata: title, date (ISO), tags, summary
+        ├── blog.md                    ← Long-form (blog). Part N ends with series callout to Part N+1.
+        ├── linkedin.md
+        ├── twitter.md
+        ├── xiaohongshu.md             ← Chinese
+        ├── xhs-cards.html             ← Source HTML for XHS carousel; reviewable + reproducible artifact
         └── images/
-            ├── cover.png              ← Cover image (1200×630px)
-            └── *.png                  ← Diagrams referenced in blog
-```
-
-**Note:** There is NO per-folder `blog.html`. The single `post.html` at root renders any post dynamically via `?slug=YYYY-MM-slug`.
-
----
-
-## How to Create a New Post
-
-### Step 1 — Get source material
-Source is a Claude chat transcript, rough markdown, or bullet list of ideas.
-
-### Step 2 — Create the post folder
-```
-posts/YYYY-MM-slug/
-```
-Kebab-case slug, 2–4 words. Example: `2026-04-agent-design-patterns`
-
-### Step 3 — Draft all platform variants
-
-| File | Format | Length | Tone |
-|------|--------|--------|------|
-| `blog.md` | Markdown | 600–900 words | Personal, 2/3 technical, first person |
-| `linkedin.md` | Plain text | 150–250 words | Thought leadership, ends with question |
-| `twitter.md` | Plain text | 5–7 tweets | Punchy, opinionated, hook in tweet 1 |
-| `xiaohongshu.md` | Markdown | 300–450 words | Chinese, casual, relatable, emoji ok |
-
-**Voice:** Practitioner-thinker. Not academic. Not hype. Grounded in real experience, systems-thinking lens. First person. Honest about uncertainty.
-
-### Step 4 — Generate images
-Save to `posts/YYYY-MM-slug/images/`:
-
-| File | Size | Notes |
-|------|------|-------|
-| `cover.png` | 1200×630px | Warm parchment bg (#f6f3ec), teal (#1c6454), clean |
-| Diagrams | 1000×600px | Match site aesthetic |
-
-**Visual style:** bg `#f6f3ec`, accent `#1c6454` (teal), DM Mono for labels. Clean, minimal, warm.
-
-### Step 5 — Register post in post.html
-Add an entry to the `POSTS` object in `post.html`:
-```js
-'YYYY-MM-slug': {
-  title: 'Post Title Here',
-  date: 'Month YYYY',
-  tags: ['Tag1', 'Tag2'],
-},
-```
-
-### Step 6 — Add post row to index.html
-Add above the `<!-- Add new posts above this line -->` comment:
-```html
-<a class="post-row" href="post.html?slug=YYYY-MM-slug">
-  <span class="post-year">YYYY</span>
-  <span class="post-title">Post Title Here</span>
-  <div class="post-tags">
-    <span class="tag">Tag1</span>
-  </div>
-  <span class="post-arrow">→</span>
-</a>
-```
-
-### Step 7 — Commit and push
-```bash
-git add .
-git commit -m "post: YYYY-MM-slug"
-git push origin main
+            ├── cover.png
+            └── *.png                  ← Generated images replacing placeholders
 ```
 
 ---
 
-## How to Update an Existing Post
+## Phase 1 — Draft (`/draft`)
 
-1. Edit `posts/YYYY-MM-slug/blog.md`
-2. If title/date/tags changed, update the `POSTS` entry in `post.html`
-3. Commit: `update: YYYY-MM-slug — [what changed]`
+Read `agent-sops/draft.sop.md` and follow the instructions.
 
 ---
 
-## Site Design
+## Phase 2 — Review (`/review`)
 
-- **Theme:** Warm parchment, single teal accent, Igor Mahr-inspired minimal layout
-- **Colors:** bg `#f6f3ec`, accent `#1c6454`, borders `rgba(28,100,84,.15)`
-- **Fonts:** Syne 800 (outlined hero), DM Sans (body), DM Mono (labels/tags/meta)
-- **Layout:** 3-column — thin sidebars with rotated text, center content max 720–780px
-- **Nav style:** Pill-bordered links (border-radius: 100px)
-- **Section labels:** `= Writing` style with DM Mono
-- **No frameworks.** No build tools. Pure HTML + CSS + minimal JS.
-- **CDNs allowed:** Google Fonts, marked.js, highlight.js, mermaid.js
+Read `agent-sops/review.sop.md` and follow the instructions.
+
+Use this any time you want structured feedback on:
+- `internal/YYYY-MM-DD-slug/draft.md`
+- `posts/YYYY-MM-DD-slug/blog.md`
+- `posts/YYYY-MM-DD-slug/linkedin.md`
+- `posts/YYYY-MM-DD-slug/twitter.md`
+- `posts/YYYY-MM-DD-slug/xiaohongshu.md`
 
 ---
 
-## Author Context
+## Phase 3 — Generate (`/generate`)
 
-**Name:** Shengfu Zhang
-**Bio:** Engineer exploring how AI is reshaping the way we build software. Sharing what I'm learning along the way.
-**Topics:** AI coding agents, engineering systems, developer productivity, multi-agent design, software quality
-**Platforms:** Substack, LinkedIn, X/Twitter, 小红书
-**Language:** English for all platforms except 小红书 (Chinese)
-**Do not mention:** Current employer or job title explicitly
+Read `agent-sops/generate.sop.md` and follow the instructions.
+
+---
+
+## Phase 4 — Publish (`/publish`)
+
+Read `agent-sops/publish.sop.md` and follow the instructions.
+
+---
+
+## Design Rules
+
+- **Theme:** Warm parchment (`#f4f2ee`), dot-grid background, white cards, teal accent (`#1c6454`)
+- **Fonts:** Syne 800 (headings), DM Sans (body), DM Mono (labels/meta/tags)
+- **Layout:** Two-column sticky sidebar + scrollable post cards
+- **Read time:** Always shown as filled teal pill at the top of every post, format: `N min read · X,XXX words`
+- **Tags:** Filled pill, `rgba(28,100,84,.1)` bg, teal text
+- **No frameworks, no build step.** CDNs: Google Fonts, marked.js, highlight.js, mermaid.js
+- Never change design without being asked
+
+---
+
+## Author
+
+- **Name:** Shengfu Zhang
+- **Bio:** Engineer exploring how AI is reshaping the way we build software. Sharing what I'm learning along the way.
+- **Topics:** AI agents, engineering systems, developer productivity, software quality
+- **Platforms:** Blog · LinkedIn · X/Twitter · 小红书
+- **Language:** English everywhere except 小红书 (Chinese)
+- **Do not mention** current employer or job title explicitly
+
+---
+
+## Ad Hoc Tool Usage
+
+These MCP plugins are available outside the main workflow — use them on request:
+
+| Tool | When to use |
+|------|-------------|
+| `context7` | Look up current docs for any library, framework, or API (React, Next.js, GitHub API, etc.) |
+| `chrome-devtools` | Browser automation — screenshot pages, fill forms, navigate, inspect console/network |
+
+Examples:
+- "Check the GitHub Pages API docs" → use `context7`
+- "Take a screenshot of the live site" → use `chrome-devtools`
+- "Screenshot each XHS card" → use `chrome-devtools` (already part of `/generate`)
 
 ---
 
 ## What NOT to Do
 
-- Don't create per-folder `blog.html` files — use `post.html?slug=` instead
-- Don't change `index.html` or `post.html` design without being asked
-- Don't publish to Substack/LinkedIn/X automatically — drafts only, human approves
-- Don't put internal docs in `posts/` — use `internal/` instead
-- Don't invent data or metrics — use `[X%]` placeholders if real numbers aren't provided
+- Never `git push` without explicit approval
+- Never publish to any platform without Shengfu doing final review
+- Never create per-folder `blog.html` — use `post.html?slug=` instead
+- Never put internal docs in `posts/` — `internal/` is gitignored for a reason
+- Never invent data or metrics — use `[placeholder]` if real numbers aren't available
+- Never change `index.html` or `post.html` design without being asked
+- Never use relative paths (`../other-post/`) in `blog.md` links — `post.html` renders from the root, so inter-post links must use `post.html?slug=YYYY-MM-DD-slug`
